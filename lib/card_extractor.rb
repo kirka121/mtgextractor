@@ -39,6 +39,7 @@ module MTGExtractor
       @card_details['rarity']             = extract_rarity
       @card_details['colors']             = determine_colors
       @card_details['transformed_id']     = extract_transformed_multiverse_id
+      @card_details['card_number']        = extract_card_number
       @card_details['artist']             = extract_artist
       @card_details['set_icon_url']       = extract_expansion_symbol_url
 
@@ -338,6 +339,12 @@ module MTGExtractor
       multiverse_id_regex = /<img src="\.\.\/\.\.\/Handlers\/Image\.ashx\?multiverseid=(\d+)&amp;type=card/
       multiverse_ids_on_page = card_details['page_html'].scan(multiverse_id_regex).flatten.uniq
       (multiverse_ids_on_page - [card_details['multiverse_id']]).first
+    end
+
+    def extract_card_number
+      card_number_regex = /Card\sNumber:.*\n.*\n\s*(\d+)<\/div>/mi
+      match = card_details['page_html'][card_number_regex, 1]
+      match ? match : nil
     end
 
     def extract_artist
