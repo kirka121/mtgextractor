@@ -270,7 +270,7 @@ module MTGExtractor
     def extract_power(html=nil)
       page_html = html ? html : card_details['page_html']
       name = extract_name(page_html)
-      creature_power_regex = /P\/T:.*\n.*\n\s*(\d)\s\/\s\d/mi
+      creature_power_regex = /P\/T:.*\n.*\n\s*(\d+)\s\/\s\d+/mi
       match = page_html[creature_power_regex, 1]
       match ? match : nil
     end
@@ -278,7 +278,7 @@ module MTGExtractor
     def extract_toughness(html=nil)
       page_html = html ? html : card_details['page_html']
       name = extract_name(page_html)
-      creature_toughness_regex = /P\/T:.*\n.*\n\s*\d\s\/\s(\d)/mi
+      creature_toughness_regex = /P\/T:.*\n.*\n\s*\d+\s\/\s(\d+)/mi
       match = page_html[creature_toughness_regex, 1]
       match ? match : nil
     end
