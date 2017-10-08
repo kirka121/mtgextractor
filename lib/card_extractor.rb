@@ -172,7 +172,7 @@ module MTGExtractor
 
       if !multipart_card?
         single_card_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name}(.+?Expansion:)/mi
-        card_html = card_html.match(single_card_regex)[1]
+        card_html = card_html.match(single_card_regex)[1] rescue nil
       end
 
       if card_html.match(/Card Text:/)
