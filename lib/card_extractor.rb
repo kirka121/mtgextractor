@@ -87,7 +87,8 @@ module MTGExtractor
 
     def regex_name(n=extract_name)
       Regexp.quote(n).
-        sub("rathi\\ Berserker","(?:AE|Æ|)rathi Berserker").
+        #sub("rathi\\ Berserker","(?:AE|Æ|)rathi Berserker").
+        sub("Æ", "Ae").
         gsub(/ +/,"\s*").
         sub(/^(X+)/,"(?:\\1)?")
     end
@@ -155,8 +156,7 @@ module MTGExtractor
         card_types_regex = /Types:<\/div>\s+<div[^>]*>\s+([^>]+)<\/div>/
       else
         name = extract_name(page_html)
-        card_types_regex = /Types:<\/div>\s+<div[^>]*>\s+([^>]+)<\/div>/
-        # naive fix. /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name(name)}.+?Types:<\/div>\s+<div[^>]*>\s+([^>]+)<\/div>)/
+        card_types_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name(name)}.+?Types:<\/div>\s+<div[^>]*>\s+([^>]+)<\/div>)/mi
       end
 
       card_types = page_html.match(card_types_regex)[1]
@@ -177,8 +177,6 @@ module MTGExtractor
         single_card_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name}(.+?Expansion:)/mi
         card_html = card_html.match(single_card_regex)[1]
       end
-
-      #puts "\n >>> card html: #{card_html}"
 
       if card_html && card_html.match(/Card Text:/)
         if card_html.match(/Flavor Text:/)

@@ -228,7 +228,7 @@ describe MTGExtractor::CardExtractor do
   end
 
   describe '#extract_types' do
-    it "should extract all of a card's types from a Gatherer card web page qqq" do
+    it "should extract all of a card's types from a Gatherer card web page" do
       @card_extractor.card_details['page_html'] = read_gatherer_page('aether_mutation.html')
       @card_extractor.extract_types.should == ['Sorcery']
 
@@ -239,7 +239,7 @@ describe MTGExtractor::CardExtractor do
       @card_extractor.extract_types.should == ['Creature', 'Human', 'Rogue', 'Werewolf']
 
       @card_extractor.card_details['page_html'] = read_gatherer_page('terror_of_kruin_pass.html')
-      @card_extractor.extract_types.should == ['Creature', 'Human', 'Rogue', 'Werewolf']
+      @card_extractor.extract_types.should == ['Creature', 'Werewolf']
 
       @card_extractor.card_details['page_html'] = read_gatherer_page('fire_ice_ice.html')
       @card_extractor.extract_types.should == ['Instant']
@@ -268,7 +268,11 @@ describe MTGExtractor::CardExtractor do
   end
 
   describe '#extract_oracle_text' do
-    it "should extract a card's oracle text from a Gatherer card web page" do
+    it "should extract a card's oracle text from a Gatherer card web page qqq" do
+      @card_extractor.card_details['multiverse_id'] = '382837'
+      @card_extractor.card_details['page_html'] = read_gatherer_page('aether_mutation.html')
+      @card_extractor.extract_oracle_text.should == "Return target creature to its owner's hand. Create X 1/1 green Saproling creature tokens, where X is that creature's converted mana cost."
+
       @card_extractor.card_details['multiverse_id'] = '234429'
       @card_extractor.card_details['page_html'] = read_gatherer_page("fortress_crab.html")
       @card_extractor.extract_oracle_text.should == ""
