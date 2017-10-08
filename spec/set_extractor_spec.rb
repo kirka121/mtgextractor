@@ -22,7 +22,7 @@ describe MTGExtractor::SetExtractor do
   describe "#get_card_urls" do
     let (:extractor) { MTGExtractor::SetExtractor.new("Dark Ascension") }
     let (:page_html) { read_gatherer_page("dark_ascension.html") }
-    before do 
+    before do
       RestClient.stub(:get).and_return(page_html)
     end
     it "should make a request to get the page html for that set" do
@@ -49,9 +49,9 @@ describe MTGExtractor::SetExtractor do
     # that this data will be outdated sometime soon. Regardless, the concepts are the same.
     let (:extractor) { MTGExtractor::SetExtractor }
     let (:page_html) { read_gatherer_page("gatherer_home_page.html") }
-    let (:gatherer_home_page) { 'http://gatherer.wizards.com/Pages/Default.aspx' }
+    let (:gatherer_home_page) { 'http://gatherer.wizards.com' }
     let (:total_sets) { 114 }
-    before do 
+    before do
       RestClient.stub(:get).and_return(page_html)
     end
     it "should request to get the page html for the gatherer home page" do

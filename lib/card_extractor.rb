@@ -151,15 +151,15 @@ module MTGExtractor
     def extract_types(html=nil)
       page_html = html ? html : card_details['page_html']
 
-      puts "\n >>> page html: #{page_html}"
-
       if multipart_card?
         card_types_regex = /Types:<\/div>\s+<div[^>]*>\s+([^>]+)<\/div>/
       else
         name = extract_name(page_html)
-        card_types_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name(name)}.+?Types:<\/div>\s+<div[^>]*>\s+([^>]+)<\/div>)/mi
+        card_types_regex = /Types:<\/div>\s+<div[^>]*>\s+([^>]+)<\/div>/
+        # naive fix. /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name(name)}.+?Types:<\/div>\s+<div[^>]*>\s+([^>]+)<\/div>)/
       end
-      card_types = page_html.match(card_types_regex)[1] rescue nil
+
+      card_types = page_html.match(card_types_regex)[1]
       if card_types
         card_types.split("—").collect {|type| type.strip.split(/\s+/)}.flatten
       else
@@ -175,8 +175,10 @@ module MTGExtractor
 
       if !multipart_card?
         single_card_regex = /Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name}(.+?Expansion:)/mi
-        card_html = card_html.match(single_card_regex)[1] rescue nil
+        card_html = card_html.match(single_card_regex)[1]
       end
+
+      #puts "\n >>> card html: #{card_html}"
 
       if card_html && card_html.match(/Card Text:/)
         if card_html.match(/Flavor Text:/)

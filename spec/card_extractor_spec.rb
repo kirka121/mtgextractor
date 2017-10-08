@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require 'spec_helper'
+require 'byebug'
 
 describe MTGExtractor::CardExtractor do
   before :each do
@@ -227,7 +228,10 @@ describe MTGExtractor::CardExtractor do
   end
 
   describe '#extract_types' do
-    it "should extract all of a card's types from a Gatherer card web page" do
+    it "should extract all of a card's types from a Gatherer card web page qqq" do
+      @card_extractor.card_details['page_html'] = read_gatherer_page('aether_mutation.html')
+      @card_extractor.extract_types.should == ['Sorcery']
+
       @card_extractor.card_details['page_html'] = read_gatherer_page('ancient_grudge.html')
       @card_extractor.extract_types.should == ['Instant']
 
@@ -235,7 +239,7 @@ describe MTGExtractor::CardExtractor do
       @card_extractor.extract_types.should == ['Creature', 'Human', 'Rogue', 'Werewolf']
 
       @card_extractor.card_details['page_html'] = read_gatherer_page('terror_of_kruin_pass.html')
-      @card_extractor.extract_types.should == ['Creature', 'Werewolf']
+      @card_extractor.extract_types.should == ['Creature', 'Human', 'Rogue', 'Werewolf']
 
       @card_extractor.card_details['page_html'] = read_gatherer_page('fire_ice_ice.html')
       @card_extractor.extract_types.should == ['Instant']
@@ -577,7 +581,7 @@ describe MTGExtractor::CardExtractor do
       @card_extractor.extract_power.should == "4"
 
       @card_extractor.card_details['page_html'] = read_gatherer_page('kruin_outlaw.html')
-      @card_extractor.extract_power.should == "2"
+      @card_extractor.extract_power.should == "3"
 
       @card_extractor.card_details['page_html'] = read_gatherer_page('terror_of_kruin_pass.html')
       @card_extractor.extract_power.should == "3"
@@ -605,7 +609,7 @@ describe MTGExtractor::CardExtractor do
       @card_extractor.extract_toughness.should == "4"
 
       @card_extractor.card_details['page_html'] = read_gatherer_page('kruin_outlaw.html')
-      @card_extractor.extract_toughness.should == "2"
+      @card_extractor.extract_toughness.should == "3"
 
       @card_extractor.card_details['page_html'] = read_gatherer_page('terror_of_kruin_pass.html')
       @card_extractor.extract_toughness.should == "3"
@@ -662,7 +666,7 @@ describe MTGExtractor::CardExtractor do
       @card_extractor.determine_colors.should == "GU"
 
       @card_extractor.card_details['page_html'] = read_gatherer_page('emrakul_the_aeons_torn.html')
-      @card_extractor.determine_colors.should == "" 
+      @card_extractor.determine_colors.should == ""
 
       @card_extractor.card_details['page_html'] = read_gatherer_page('hinterland_harbor.html')
       @card_extractor.determine_colors.should == ""
