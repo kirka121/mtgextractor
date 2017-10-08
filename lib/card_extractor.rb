@@ -1,9 +1,8 @@
 # encoding: utf-8
 
-# NOTE: Cards that "flip" (e.g., Erayo, Soratami Ascendant, Kitsune Mystic, 
+# NOTE: Cards that "flip" (e.g., Erayo, Soratami Ascendant, Kitsune Mystic,
 # Callow Jushi) are not handled consistently in Gatherer. We will not try to
 # improve upon this tragedy; some things will therefore remain unsearchable.
-
 
 module MTGExtractor
   class CardExtractor
@@ -45,7 +44,7 @@ module MTGExtractor
 
       @card_details
     end
-    
+
     def get_card_details
       success = false
 
@@ -63,12 +62,12 @@ module MTGExtractor
 
       parse_page
     end
-    
+
     def next_card_details
       namepart=@card_details['page_html'].lines.grep(/ctl00_ctl00_ctl00_MainContent_SubContent_SubContentHeader_subtitleDisplay/)*"\n"
       cardpart=@card_details['page_html'].split("End Card Details Table",2)[1]
       @card_details['page_html']=namepart+"\n"+cardpart
-      
+
       parse_page
     end
 
@@ -85,7 +84,7 @@ module MTGExtractor
       page_html = html ? html : card_details['page_html']
       page_html.match(match_data)[1]
     end
-    
+
     def regex_name(n=extract_name)
       Regexp.quote(n).
         sub("rathi\\ Berserker","(?:AE|Æ|)rathi Berserker").
@@ -157,7 +156,7 @@ module MTGExtractor
         name = extract_name(page_html)
         card_types_regex = /(?:Card Name:<\/div>\s+<div[^>]*>\s+#{regex_name(name)}.+?Types:<\/div>\s+<div[^>]*>\s+([^>]+)<\/div>)/mi
       end
-      card_types = page_html.match(card_types_regex)[1]
+      card_types = page_html.match(card_types_regex)[1] rescue nil
       if card_types
         card_types.split("—").collect {|type| type.strip.split(/\s+/)}.flatten
       else
@@ -195,7 +194,7 @@ module MTGExtractor
         oracle_text = oracle_text.gsub(/<\/?[ib]>|<\/div>/, '').strip
 
         # "flipping" card with side-by-side Gatherer display?
-        if !extract_transformed_multiverse_id and 
+        if !extract_transformed_multiverse_id and
             card_details['page_html'].match(/Card Name:.+Card Name:/m) and
             oracle_text.match(/\bflip\b/)
           # hack together the flipped version of the card html
@@ -358,7 +357,6 @@ module MTGExtractor
       qstring = card_details['page_html'].match(expansion_regex)[1].gsub(/&amp;/, "&")
       "http://gatherer.wizards.com/Handlers/Image.ashx?#{qstring}"
     end
-    
 
     private
 
@@ -384,6 +382,5 @@ module MTGExtractor
     end
 
   end
-
 
 end
