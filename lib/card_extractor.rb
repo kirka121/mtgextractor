@@ -150,6 +150,9 @@ module MTGExtractor
 
     def extract_types(html=nil)
       page_html = html ? html : card_details['page_html']
+
+      puts "\n >>> page html: #{page_html}"
+
       if multipart_card?
         card_types_regex = /Types:<\/div>\s+<div[^>]*>\s+([^>]+)<\/div>/
       else
@@ -175,7 +178,7 @@ module MTGExtractor
         card_html = card_html.match(single_card_regex)[1] rescue nil
       end
 
-      if card_html.match(/Card Text:/)
+      if card_html && card_html.match(/Card Text:/)
         if card_html.match(/Flavor Text:/)
           oracle_regex = /Card Text:<\/div>(.+?)Flavor Text:/m
         elsif card_html.match(/Color Indicator:/)
