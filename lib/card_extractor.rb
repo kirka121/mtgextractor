@@ -88,7 +88,7 @@ module MTGExtractor
     def regex_name(n=extract_name)
       Regexp.quote(n).
         sub("rathi\\ Berserker","(?:AE|Æ|)rathi Berserker").
-        sub("Yet\\ Another\\ Aether\\ Vortex","Yet Another Æther Vortex").
+        sub("Yet\\ Another\\ Æther\\ Vortex","Yet Another Aether Vortex").
         sub("Æ", "Ae").
         gsub(/ +/,"\s*").
         sub(/^(X+)/,"(?:\\1)?")
